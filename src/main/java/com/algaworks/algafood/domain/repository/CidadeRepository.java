@@ -10,5 +10,5 @@ public interface CidadeRepository {
     Cidade buscar(Long id);
     Cidade salvar(Cidade cidade);
     void remover(Cidade cidade);
-	
+
 }

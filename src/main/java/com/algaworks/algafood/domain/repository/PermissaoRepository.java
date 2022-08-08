@@ -10,5 +10,5 @@ public interface PermissaoRepository {
     Permissao buscar(Long id);
     Permissao salvar(Permissao permissao);
     void remover(Permissao permissao);
-	
+
 }
