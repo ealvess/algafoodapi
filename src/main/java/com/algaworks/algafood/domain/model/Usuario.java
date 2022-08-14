@@ -1,4 +1,4 @@
-package com.algaworks.algafood;
+package com.algaworks.algafood.domain.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,8 +14,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
-
-import com.algaworks.algafood.domain.model.Grupo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
