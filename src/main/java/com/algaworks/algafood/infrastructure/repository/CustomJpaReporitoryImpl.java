@@ -12,10 +12,10 @@ import com.algaworks.algafood.domain.repository.CustomJpaRepository;
 public class CustomJpaReporitoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements CustomJpaRepository<T, ID>{
 
 	private EntityManager manager;
-	
+
 	public CustomJpaReporitoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
-		
+
 		this.manager = entityManager;
 	}
 
@@ -25,10 +25,10 @@ public class CustomJpaReporitoryImpl<T, ID> extends SimpleJpaRepository<T, ID> i
 		T entity = manager.createQuery(jpql, getDomainClass())
 			.setMaxResults(1)
 			.getSingleResult();
-		
+
 		return Optional.ofNullable(entity);
 	}
 
-	
-	
+
+
 }

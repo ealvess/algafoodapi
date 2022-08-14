@@ -12,14 +12,14 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 
 @Service
 public class CadastroEstadoService {
-	
+
 	@Autowired
 	private EstadoRepository estadoRepository;
-	
+
 	public Estado salvar(Estado estado) {
 		return estadoRepository.save(estado);
 	}
-	
+
 	public void excluir(Long estadoId) {
 		try {
 			estadoRepository.deleteById(estadoId);
@@ -30,7 +30,7 @@ public class CadastroEstadoService {
 			throw new EntidadeEmUsoException(
 					String.format("Não é possivel excluir Estado com código %d, pois está em uso", estadoId));
 		}
-		
+
 	}
-	
+
 }
