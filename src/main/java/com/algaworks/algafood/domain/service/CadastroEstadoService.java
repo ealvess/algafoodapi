@@ -13,6 +13,9 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 @Service
 public class CadastroEstadoService {
 
+	private static final String MSG_ESTADO_EM_USO = "Não é possivel excluir Estado com código %d, pois está em uso";
+	private static final String MSG_ESTADO_NAO_ENCONTRADO = "Não existem um cadastro de Estado com o código %d";
+
 	@Autowired
 	private EstadoRepository estadoRepository;
 
@@ -24,13 +27,16 @@ public class CadastroEstadoService {
 		try {
 			estadoRepository.deleteById(estadoId);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Não existem um cadastro de Estado com o código %d", estadoId));
-		}catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(
-					String.format("Não é possivel excluir Estado com código %d, pois está em uso", estadoId));
+			throw new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoId));
+		} catch (DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, estadoId));
 		}
 
+	}
+
+	public Estado buscarOuFalhar(Long estadoId) {
+		return estadoRepository.findById(estadoId).orElseThrow(
+				() -> new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoId)));
 	}
 
 }
