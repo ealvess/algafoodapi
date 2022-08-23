@@ -47,4 +47,18 @@ class CadastroCozinhaIT {
 			.body("nome", hasItems("Indiana", "Tailandesa"));//o codigo de status tem que ser 200
 	}
 	
+	@Test
+	public void deveRetornarStatus201_QuandoCadastrarCozinha() {
+		given()
+			.body("{ \"nome\": \"Chinesa\"}")
+			.contentType(ContentType.JSON)
+			.accept(ContentType.JSON)
+		.when()
+			.post()
+		.then()
+			.statusCode(HttpStatus.CREATED.value());
+	}
+	
+	
+	
 }
