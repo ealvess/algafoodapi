@@ -14,20 +14,19 @@ public abstract class RestauranteMixin {
 
 	@JsonIgnoreProperties(value = "nome", allowGetters = true)
 	private Cozinha cozinha;
-
-	@JsonIgnore
 	
+	@JsonIgnore
 	private Endereco endereco;
-
-//	@JsonIgnore
+	
+	@JsonIgnore
 	private OffsetDateTime dataCadastro;
-
-//	@JsonIgnore
-	private OffsetDateTime dataAtualizacao; 
-
+	
+	@JsonIgnore
+	private OffsetDateTime dataAtualizacao;
+	
 	@JsonIgnore
 	private List<FormaPagamento> formasPagamento;
-
+	
 	@JsonIgnore
 	private List<Produto> produtos;
 }
