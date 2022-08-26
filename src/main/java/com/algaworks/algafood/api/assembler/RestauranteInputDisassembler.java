@@ -9,11 +9,12 @@ import com.algaworks.algafood.domain.model.Restaurante;
 
 @Component
 public class RestauranteInputDisassembler {
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
 	
 	public Restaurante toDomainObject(RestauranteInput restauranteInput) {
 		return modelMapper.map(restauranteInput, Restaurante.class);
 	}
+	
 }

@@ -30,7 +30,6 @@ import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 @RequestMapping(value = "/restaurantes")
 public class RestauranteController {
 
-
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
@@ -38,21 +37,21 @@ public class RestauranteController {
 	private CadastroRestauranteService cadastroRestaurante;
 	
 	@Autowired
-	private RestauranteModelAssembler restaranteModelAssembler;
+	private RestauranteModelAssembler restauranteModelAssembler;
 	
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 	
 	@GetMapping
 	public List<RestauranteModel> listar() {
-		return restaranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
+		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 	
 	@GetMapping("/{restauranteId}")
 	public RestauranteModel buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 		
-		return restaranteModelAssembler.toModel(restaurante);
+		return restauranteModelAssembler.toModel(restaurante);
 	}
 	
 	@PostMapping
@@ -61,7 +60,7 @@ public class RestauranteController {
 		try {
 			Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 			
-			return restaranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
+			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
@@ -78,10 +77,10 @@ public class RestauranteController {
 			BeanUtils.copyProperties(restaurante, restauranteAtual, 
 					"id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 
-			return restaranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
+			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
-	
+
 }

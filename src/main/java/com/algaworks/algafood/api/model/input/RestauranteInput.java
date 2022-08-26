@@ -10,10 +10,10 @@ import javax.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 public class RestauranteInput {
-	
+
 	@NotBlank
 	private String nome;
 	
@@ -24,4 +24,5 @@ public class RestauranteInput {
 	@Valid
 	@NotNull
 	private CozinhaIdInput cozinha;
+	
 }
