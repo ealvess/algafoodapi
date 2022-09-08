@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -70,6 +71,20 @@ public class CadastroRestauranteService {
 		
 		restaurante.adicionarFormaPagamento(formaPagamento);
 		
+	}
+	
+	@Transactional
+	public void abrir(@PathVariable Long restaruanteId) {
+		Restaurante restaurante = buscarOuFalhar(restaruanteId);
+		
+		restaurante.abrir();
+	}
+	
+	@Transactional
+	public void fechar(@PathVariable Long restauranteId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		
+		restaurante.fechar();
 	}
 	
 	public Restaurante buscarOuFalhar(Long restauranteId) {
