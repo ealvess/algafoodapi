@@ -17,11 +17,7 @@ public class GrupoInputDisassembler {
         return modelMapper.map(grupoInput, Grupo.class);
     }
     
-    public void copyToDomainObject(GrupoInput grupoInput, Grupo grupo) {
-        // Para evitar org.hibernate.HibernateException: identifier of an instance of 
-        // com.algaworks.algafood.domain.model.Estado was altered from 1 to 2
-//        grupo.setEstado(new Estado());
-        
+    public void copyToDomainObject(GrupoInput grupoInput, Grupo grupo) {      
         modelMapper.map(grupoInput, grupo);
     }
 }
