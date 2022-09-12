@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.model.StatusPedido;
 
 @Service
 public class FluxoPedidoService {
@@ -20,13 +18,7 @@ public class FluxoPedidoService {
 	public void confirmar(Long pedidoId) {
 		Pedido pedido =	emissaoPedidoService.buscarOuFalhar(pedidoId);
 		
-		if (!pedido.getStatus().equals(StatusPedido.CRIADO)) {
-			throw new NegocioException(
-					String.format("Status do pedido %d não pode ser alterado de %s para %s", 
-							pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.CONFIRMADO	));
-		}
-		
-		pedido.setStatus(StatusPedido.CONFIRMADO);
+		pedido.confirmar();
 		pedido.setDataConfirmacao(OffsetDateTime.now());
 	}
 	
@@ -34,12 +26,7 @@ public class FluxoPedidoService {
 	public void cancelamento(Long pedidoId) {
 		Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId);
 		
-		if (!pedido.getStatus().equals(StatusPedido.CRIADO)) {
-			throw new NegocioException(String.format("Status do pedido %d não pode ser alterado de %s para %s",
-					pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.CANCELADO));
-		}
-		
-		pedido.setStatus(StatusPedido.CANCELADO);
+		pedido.cancelar();
 		pedido.setDataCancelamento(OffsetDateTime.now());
 	}
 	
@@ -47,12 +34,7 @@ public class FluxoPedidoService {
 	public void entregue(Long pedidoId) {
 		Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId);
 		
-		if (!pedido.getStatus().equals(StatusPedido.CONFIRMADO)) {
-			throw new NegocioException(String.format("Status do pedido %d não pode ser alterado de %s para %s",
-					pedido.getId(), pedido.getStatus().getDescricao(), StatusPedido.ENTREGUE));
-		}
-		
-		pedido.setStatus(StatusPedido.ENTREGUE);
+		pedido.entregar();
 		pedido.setDataEntrega(OffsetDateTime.now());
 	}
 }
