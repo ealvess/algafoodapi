@@ -15,24 +15,24 @@ public class FluxoPedidoService {
 	private EmissaoPedidoService emissaoPedidoService;
 	
 	@Transactional
-	public void confirmar(Long pedidoId) {
-		Pedido pedido =	emissaoPedidoService.buscarOuFalhar(pedidoId);
+	public void confirmar(String codigoPedido) {
+		Pedido pedido =	emissaoPedidoService.buscarOuFalhar(codigoPedido);
 		
 		pedido.confirmar();
 		pedido.setDataConfirmacao(OffsetDateTime.now());
 	}
 	
 	@Transactional
-	public void cancelamento(Long pedidoId) {
-		Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId);
+	public void cancelamento(String codigoPedido) {
+		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
 		
 		pedido.cancelar();
 		pedido.setDataCancelamento(OffsetDateTime.now());
 	}
 	
 	@Transactional
-	public void entregue(Long pedidoId) {
-		Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId);
+	public void entregue(String codigoPedido) {
+		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
 		
 		pedido.entregar();
 		pedido.setDataEntrega(OffsetDateTime.now());
