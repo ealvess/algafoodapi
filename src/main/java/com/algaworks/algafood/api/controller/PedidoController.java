@@ -30,40 +30,33 @@ import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 
 @RestController
-@RequestMapping("/pedidos")
+@RequestMapping(value = "/pedidos")
 public class PedidoController {
 
 	@Autowired
 	private PedidoRepository pedidoRepository;
-
-	@Autowired
-	private PedidoModelAssembler pedidoModelAssembler;
-
-	@Autowired
-	private PedidoResumoModelAssembler pedidoResumoModelAssembler;
-
+	
 	@Autowired
 	private EmissaoPedidoService emissaoPedido;
-
+	
+	@Autowired
+	private PedidoModelAssembler pedidoModelAssembler;
+	
+	@Autowired
+	private PedidoResumoModelAssembler pedidoResumoModelAssembler;
+	
 	@Autowired
 	private PedidoInputDisassembler pedidoInputDisassembler;
 	
 	@GetMapping
 	public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
-		List<Pedido> pedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
-
-		return pedidoResumoModelAssembler.toCollectionModel(pedidos);
+		List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
+		
+		return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
 	}
-
-	@GetMapping("/{codigoPedido}")
-	public PedidoModel buscar(@PathVariable String codigoPedido) {
-		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
-
-		return pedidoModelAssembler.toModel(pedido);
-	}
-
-	@ResponseStatus(HttpStatus.CREATED)
+	
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
 		try {
 			Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
@@ -79,5 +72,12 @@ public class PedidoController {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
-
+	
+	@GetMapping("/{codigoPedido}")
+	public PedidoModel buscar(@PathVariable String codigoPedido) {
+		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
+		
+		return pedidoModelAssembler.toModel(pedido);
+	}
+	
 }

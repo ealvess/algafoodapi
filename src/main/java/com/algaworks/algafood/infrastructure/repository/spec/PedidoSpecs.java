@@ -31,14 +31,13 @@ public class PedidoSpecs {
 						filtro.getDataCriacaoInicio()));
 			}
 			
-			if (filtro.getDataCriacaoInicio() != null) {
+			if (filtro.getDataCriacaoFim() != null) {
 				predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"), 
 						filtro.getDataCriacaoFim()));
 			}
 			
 			return builder.and(predicates.toArray(new Predicate[0]));
 		};
-			
 	}
 	
 }

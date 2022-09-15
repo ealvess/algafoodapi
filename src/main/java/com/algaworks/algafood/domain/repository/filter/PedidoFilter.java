@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PedidoFilter {
-	
+
 	private Long clienteId;
 	private Long restauranteId;
 	
@@ -20,4 +20,5 @@ public class PedidoFilter {
 	
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private OffsetDateTime dataCriacaoFim;
+	
 }
