@@ -28,15 +28,15 @@ public class EstatisticasController {
 	
 	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
-			@RequestParam(required = false, defaultValue = "+00:00") String timeOffSet){
-		
-		return vendaQueryService.consultarVendasDiarias(filtro, timeOffSet);
+			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
+		return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
 	}
 	
 	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro,
-			@RequestParam(required = false, defaultValue = "+00:00") String timeOffSet){
-		byte[] bytesPdf = vendaReportService.emitirVendasDiarias(filtro, timeOffSet);
+			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
+		
+		byte[] bytesPdf = vendaReportService.emitirVendasDiarias(filtro, timeOffset);
 		
 		var headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=vendas-diarias.pdf");
@@ -46,4 +46,5 @@ public class EstatisticasController {
 				.headers(headers)
 				.body(bytesPdf);
 	}
+	
 }
