@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -87,6 +88,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	    
 	    return handleExceptionInternal(ex, problem, headers, status, request);
 	}
+	
+	 @ExceptionHandler(MaxUploadSizeExceededException.class)
+		public ResponseEntity<?> erroMaxUpload(MaxUploadSizeExceededException ex, WebRequest request) {
+			HttpStatus status = HttpStatus.BAD_REQUEST;
+			ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
+			String detail = ex.getMessage();
+
+
+
+			ex.printStackTrace();
+			
+			Problem problem = createProblemBuilder(status, problemType, detail)
+					.userMessage(detail)
+					.build();
+
+			return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+		}
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
