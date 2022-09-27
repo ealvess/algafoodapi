@@ -14,17 +14,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class FotoProduto {
-
+	
 	@EqualsAndHashCode.Include
 	@Id
-	@Column(name="produto_id")
+	@Column(name = "produto_id")
 	private Long id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
 	private Produto produto;
 	
-	private String arquivo;
+	private String nomeArquivo;
 	private String descricao;
 	private String contentType;
 	private Long tamanho;
