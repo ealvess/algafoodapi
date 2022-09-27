@@ -16,6 +16,7 @@ public class LocalFotoStorageService implements FotoStorageService {
 	@Value("${algafood.storage.local.diretorio-fotos}")
 	private Path diretorioFotos;
 	
+	
 	@Override
 	public void armazenar(NovaFoto novaFoto) {
 		try {
@@ -48,6 +49,7 @@ public class LocalFotoStorageService implements FotoStorageService {
 			throw new StorageException("Não foi possível recuperar o arquivo.", e);
 		}
 	}
+	
 	
 	private Path getArquivoPath(String nomeArquivo) {
 		return diretorioFotos.resolve(Path.of(nomeArquivo));
