@@ -11,7 +11,6 @@ import com.algaworks.algafood.domain.exception.FotoProdutoNaoEncontradaException
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
 import com.algaworks.algafood.domain.service.FotoStorageService.NovaFoto;
-import com.algaworks.algafood.infrastructure.service.storage.LocalFotoStorageService;
 
 @Service
 public class CatalogoFotoProdutoService {
@@ -20,49 +19,51 @@ public class CatalogoFotoProdutoService {
 	private ProdutoRepository produtoRepository;
 	
 	@Autowired
-	private LocalFotoStorageService fotoStorageService;
+	private FotoStorageService fotoStorage;
 	
 	@Transactional
 	public FotoProduto salvar(FotoProduto foto, InputStream dadosArquivo) {
-		Long restaurnteId = foto.getRestauranteId();
+		Long restauranteId = foto.getRestauranteId();
 		Long produtoId = foto.getProduto().getId();
-		String novoNomeArquivo = fotoStorageService.gerarNomeArquivo(foto.getNomeArquivo());
+		String nomeNovoArquivo = fotoStorage.gerarNomeArquivo(foto.getNomeArquivo());
 		String nomeArquivoExistente = null;
 		
+		Optional<FotoProduto> fotoExistente = produtoRepository
+				.findFotoById(restauranteId, produtoId);
 		
-		Optional<FotoProduto> fotoExistente = produtoRepository.findFotoById(restaurnteId, produtoId);
-		
-		if (fotoExistente.isPresent()) {//verifica se existe um foto
+		if (fotoExistente.isPresent()) {
 			nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
 			produtoRepository.delete(fotoExistente.get());
 		}
-		foto.setNomeArquivo(novoNomeArquivo);
-		foto = produtoRepository.save(foto);
+		
+		foto.setNomeArquivo(nomeNovoArquivo);
+		foto =  produtoRepository.save(foto);
 		produtoRepository.flush();
 		
 		NovaFoto novaFoto = NovaFoto.builder()
-				.nomeAquivo(foto.getNomeArquivo())
+				.nomeArquivo(foto.getNomeArquivo())
+				.contentType(foto.getContentType())
 				.inputStream(dadosArquivo)
 				.build();
-		
-		fotoStorageService.substituir(nomeArquivoExistente, novaFoto);
+
+		fotoStorage.substituir(nomeArquivoExistente, novaFoto);
 		
 		return foto;
 	}
-	
+
+	public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
+		return produtoRepository.findFotoById(restauranteId, produtoId)
+				.orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
+	}
+
 	@Transactional
 	public void excluir(Long restauranteId, Long produtoId) {
 		FotoProduto foto = buscarOuFalhar(restauranteId, produtoId);
 		
 		produtoRepository.delete(foto);
 		produtoRepository.flush();
-		
-		fotoStorageService.remover(foto.getNomeArquivo());
-	}
-	
-	public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
-		return produtoRepository.findFotoById(restauranteId, produtoId)
-			.orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
+
+		fotoStorage.remover(foto.getNomeArquivo());
 	}
 	
 }
