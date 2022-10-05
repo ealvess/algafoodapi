@@ -13,26 +13,26 @@ import com.algaworks.algafood.domain.service.FluxoPedidoService;
 @RestController
 @RequestMapping(value = "/pedidos/{codigoPedido}")
 public class FluxoPedidoController {
-	
+
 	@Autowired
-	private FluxoPedidoService fluxoPedidoService;
+	private FluxoPedidoService fluxoPedido;
 	
 	@PutMapping("/confirmacao")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void confirmar(@PathVariable String codigoPedido) {
-		fluxoPedidoService.confirmar(codigoPedido);
+		fluxoPedido.confirmar(codigoPedido);
 	}
 	
 	@PutMapping("/cancelamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void cancelar(@PathVariable String codigoPedido) {
-		fluxoPedidoService.cancelamento(codigoPedido);
+		fluxoPedido.cancelar(codigoPedido);
 	}
 	
-	@PutMapping("/entregue")
+	@PutMapping("/entrega")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void entregar(@PathVariable String codigoPedido) {
-		fluxoPedidoService.entregue(codigoPedido);
+		fluxoPedido.entregar(codigoPedido);
 	}
 	
 }

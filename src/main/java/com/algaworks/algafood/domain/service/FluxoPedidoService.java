@@ -1,40 +1,47 @@
 package com.algaworks.algafood.domain.service;
 
-import java.time.OffsetDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.service.EnvioEmailService.Mensagem;
+
 
 @Service
 public class FluxoPedidoService {
 
 	@Autowired
-	private EmissaoPedidoService emissaoPedidoService;
+	private EmissaoPedidoService emissaoPedido;
+	
+	@Autowired
+	private EnvioEmailService envioEmail;
 	
 	@Transactional
 	public void confirmar(String codigoPedido) {
-		Pedido pedido =	emissaoPedidoService.buscarOuFalhar(codigoPedido);
-		
+		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 		pedido.confirmar();
-		pedido.setDataConfirmacao(OffsetDateTime.now());
+		
+		var mensagem = Mensagem.builder()
+				.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
+				.corpo("O pedido de código <strong>" 
+						+ pedido.getCodigo() + "</strong> foi confirmado!")
+				.destinatario(pedido.getCliente().getEmail())
+				.build();
+		
+		envioEmail.enviar(mensagem);
 	}
 	
 	@Transactional
-	public void cancelamento(String codigoPedido) {
-		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
-		
+	public void cancelar(String codigoPedido) {
+		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 		pedido.cancelar();
-		pedido.setDataCancelamento(OffsetDateTime.now());
 	}
 	
 	@Transactional
-	public void entregue(String codigoPedido) {
-		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
-		
+	public void entregar(String codigoPedido) {
+		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 		pedido.entregar();
-		pedido.setDataEntrega(OffsetDateTime.now());
 	}
+	
 }
