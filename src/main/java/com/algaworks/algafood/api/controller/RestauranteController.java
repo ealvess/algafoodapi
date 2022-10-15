@@ -31,7 +31,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 
-@CrossOrigin(origins = "http://127.0.0.1:5500/index.html")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/restaurantes")
 public class RestauranteController {
