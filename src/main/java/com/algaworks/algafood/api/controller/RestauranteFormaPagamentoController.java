@@ -20,7 +20,7 @@ import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/formas-pagamento")
 public class RestauranteFormaPagamentoController {
-	
+
 	@Autowired
 	private CadastroRestauranteService cadastroRestaurante;
 	
@@ -37,13 +37,13 @@ public class RestauranteFormaPagamentoController {
 	@DeleteMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
-		cadastroRestaurante.desassociarFormaPgamento(restauranteId, formaPagamentoId);
+		cadastroRestaurante.desassociarFormaPagamento(restauranteId, formaPagamentoId);
 	}
 	
 	@PutMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
-		cadastroRestaurante.associarFormaPgamento(restauranteId, formaPagamentoId);
+		cadastroRestaurante.associarFormaPagamento(restauranteId, formaPagamentoId);
 	}
 
 }

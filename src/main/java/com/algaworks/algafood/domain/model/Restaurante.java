@@ -48,7 +48,7 @@ public class Restaurante {
 	@Embedded
 	private Endereco endereco;
 	
-	private Boolean ativo = true;
+	private Boolean ativo = Boolean.TRUE;
 	
 	private Boolean aberto = Boolean.FALSE;
 	
@@ -70,7 +70,7 @@ public class Restaurante {
 	@JoinTable(name = "restaurante_usuario_responsavel",
 			joinColumns = @JoinColumn(name = "restaurante_id"),
 			inverseJoinColumns = @JoinColumn(name = "usuario_id"))
-	private Set<Usuario> usuario = new HashSet<>();
+	private Set<Usuario> responsaveis = new HashSet<>();
 	
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
@@ -99,19 +99,20 @@ public class Restaurante {
 		return getFormasPagamento().add(formaPagamento);
 	}
 	
-	public boolean removerUsuarioResponsavel(Usuario usuario) {
-		return getUsuario().remove(usuario);
-	}
-	
-	public boolean adicionarUsuarioResponsavel(Usuario usuario) {
-		return getUsuario().add(usuario);
-	}
-	
-	public boolean aceitaFormaDePagamento(FormaPagamento formaPagamento) {
+	public boolean aceitaFormaPagamento(FormaPagamento formaPagamento) {
 		return getFormasPagamento().contains(formaPagamento);
 	}
 	
-	public boolean naoAceitaFormaDePagamento(FormaPagamento formaPagamento) {
-		return !aceitaFormaDePagamento(formaPagamento);
+	public boolean naoAceitaFormaPagamento(FormaPagamento formaPagamento) {
+		return !aceitaFormaPagamento(formaPagamento);
 	}
+	
+	public boolean removerResponsavel(Usuario usuario) {
+		return getResponsaveis().remove(usuario);
+	}
+	
+	public boolean adicionarResponsavel(Usuario usuario) {
+		return getResponsaveis().add(usuario);
+	}
+	
 }
