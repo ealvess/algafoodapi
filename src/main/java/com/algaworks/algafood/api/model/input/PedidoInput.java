@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,14 +14,17 @@ import lombok.Setter;
 @Setter
 public class PedidoInput {
 
+	@ApiModelProperty(example = "1")
 	@Valid
 	@NotNull
 	private RestauranteIdInput restaurante;
 	
+	@ApiModelProperty(example = "Cartão de crédito", required = true)
 	@Valid
 	@NotNull
 	private FormaPagamentoIdInput formaPagamento;
 	
+	@ApiModelProperty(example = "Rua Melvin Jones")
 	@Valid
 	@NotNull
 	private EnderecoInput enderecoEntrega;

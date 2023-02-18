@@ -17,8 +17,10 @@ import org.springframework.http.MediaType;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.CozinhaModel;
+import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.PedidosModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -55,24 +57,20 @@ public class SpringFoxConfig {
 	      .globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
 	      .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
 	      .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
-				/*
-				 * .globalRequestParameters(Collections.singletonList( new
-				 * RequestParameterBuilder() .name("campos")
-				 * .description("Nomes das propriedades para filtrar na resposta, separados por vírgula"
-				 * ) .in(ParameterType.QUERY) .required(true) .query(q -> q.model(m ->
-				 * m.scalarModel(ScalarType.STRING))) .build()))
-				 */
 	      .additionalModels(typeResolver.resolve(Problem.class))
 	      .ignoredParameterTypes(ServletRequest.class)
 	      .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 	      .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaModel.class), 
 	    		  CozinhasModelOpenApi.class))
+	      .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
+	    		  PedidosModelOpenApi.class))
 	      
 	      .apiInfo(apiInfo())
 	      .tags(new Tag("Cidades", "Gerencia as cidades"),
 	    		  new Tag("Grupos", "Gerencia grupos de usuarios"),
 	    		  new Tag("Cozinhas", "Gerencia grupos de cozinhas"),
-	    		  new Tag("Formas de Pagamentos","Gerencia formas de pagamentos"));
+	    		  new Tag("Formas de Pagamentos","Gerencia formas de pagamentos"),
+	    		  new Tag("Pedidos", "Gerencia os pedidos"));
 	    
 	  }
 	
