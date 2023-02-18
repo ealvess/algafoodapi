@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.servlet.ServletRequest;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -54,6 +56,7 @@ public class SpringFoxConfig {
 	      .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
 	      .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
 	      .additionalModels(typeResolver.resolve(Problem.class))
+	      .ignoredParameterTypes(ServletRequest.class)
 	      .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 	      .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaModel.class), 
 	    		  CozinhasModelOpenApi.class))
