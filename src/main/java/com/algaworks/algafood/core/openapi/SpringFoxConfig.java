@@ -7,11 +7,13 @@ import java.util.function.Consumer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.core.openapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -45,12 +47,13 @@ public class SpringFoxConfig {
 	      .useDefaultResponseMessages(false)
 	      .globalResponses(HttpMethod.GET, globalGetResponseMessages())
 	      .globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
-	        .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
-	        .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
-	       .additionalModels(typeResolver.resolve(Problem.class))
+	      .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
+	      .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+	      .additionalModels(typeResolver.resolve(Problem.class))
+	      .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 	      .apiInfo(apiInfo())
 	      .tags(new Tag("Cidades", "Gerencia as cidades"),
-	    		  new Tag("Grupos", "Gerencia grupos de usuários"));
+	    		  new Tag("Grupos", "Gerencia grupos de usuarios"));
 	    
 	  }
 	
