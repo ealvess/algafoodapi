@@ -12,25 +12,25 @@ import lombok.Setter;
 @Getter
 public class EnderecoInput {
 	
-	@ApiModelProperty(example = "79750000", required = true)
+	@ApiModelProperty(example = "38400-000", required = true)
 	@NotBlank
 	private String cep;
-	
-	@ApiModelProperty(example = "Rua Melvin Jones", required = true)
+
+	@ApiModelProperty(example = "Rua Floriano Peixoto", required = true)
 	@NotBlank
 	private String logradouro;
-	
-	@ApiModelProperty(example = "609", required = true)
+
+	@ApiModelProperty(example = "\"1500\"", required = true)
 	@NotBlank
 	private String numero;
-	
-	@ApiModelProperty(example = "Casa dos fundos")
+
+	@ApiModelProperty(example = "Apto 901")
 	private String complemento;
-	
-	@ApiModelProperty(example = "Monte Carlo")
+
+	@ApiModelProperty(example = "Centro", required = true)
 	@NotBlank
 	private String bairro;
-	
+
 	@Valid
 	@NotNull
 	private CidadeIdInput cidade;

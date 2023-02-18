@@ -10,19 +10,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @ApiModel("RestauranteBasicoModel")
-@Getter
 @Setter
+@Getter
 public class RestauranteBasicoModelOpenApi {
 
 	@ApiModelProperty(example = "1")
 	private Long id;
-	
+
 	@ApiModelProperty(example = "Thai Gourmet")
 	private String nome;
-	
-	@ApiModelProperty(example = "10")
+
+	@ApiModelProperty(example = "12.00")
 	private BigDecimal taxaFrete;
-	
-	
+
 	private CozinhaModel cozinha;
+
 }
