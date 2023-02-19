@@ -1,5 +1,9 @@
 package com.algaworks.algafood.core.openapi;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -9,6 +13,7 @@ import javax.servlet.ServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
@@ -21,6 +26,7 @@ import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PedidosModelOpenApi;
+import com.ctc.wstx.shaded.msv_core.util.Uri;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -58,7 +64,8 @@ public class SpringFoxConfig {
 	      .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
 	      .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
 	      .additionalModels(typeResolver.resolve(Problem.class))
-	      .ignoredParameterTypes(ServletRequest.class)
+	      .ignoredParameterTypes(ServletRequest.class,
+	    		  URL.class, Uri.class, URLStreamHandler.class, Resource.class, File.class, InputStream.class)
 	      .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 	      .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaModel.class), 
 	    		  CozinhasModelOpenApi.class))
