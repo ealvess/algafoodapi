@@ -38,11 +38,11 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
 		CollectionModel<UsuarioModel> usuariosModel = usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis()).removeLinks()
-				.add(algaLinks.linkToResponsaveisRestaurante(restauranteId))
-				.add(algaLinks.linkToRestauranteUsuarioResponsavelAssociar(restauranteId, "associar"));
+				.add(algaLinks.linkToRestauranteResponsaveis(restauranteId))
+				.add(algaLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
 		
 		usuariosModel.getContent().forEach(usuarioModel -> {
-			usuarioModel.add(algaLinks.linkToRestauranteUsuarioResponsavelDesassociar(restauranteId, restauranteId, "desassociar"));
+			usuarioModel.add(algaLinks.linkToRestauranteResponsavelDesassociacao(restauranteId, restauranteId, "desassociar"));
 		});
 		
 		return usuariosModel;

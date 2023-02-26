@@ -50,7 +50,7 @@ public class PedidoModelAssembler
 	            algaLinks.linkToUsuario(pedido.getCliente().getId()));
 	    
 	    pedidoModel.getFormaPagamento().add(
-	            algaLinks.linkToFormasPagamento(pedido.getFormaPagamento().getId()));
+	            algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
 	    
 	    pedidoModel.getEnderecoEntrega().getCidade().add(
 	            algaLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
