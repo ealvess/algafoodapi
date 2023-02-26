@@ -69,6 +69,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 
 		CollectionModel<FormaPagamentoModel> formasPagamentosModel = formaPagamentoModelAssembler
 				.toCollectionModel(todasFormasPagamentos);
+		
 
 		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()).eTag(eTag)
 				.body(formasPagamentosModel);
