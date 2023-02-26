@@ -24,13 +24,14 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
 		super(GrupoController.class, GrupoModel.class);
 	}
 
+	@Override
 	public GrupoModel toModel(Grupo grupo) {
 		GrupoModel grupoModel = createModelWithId(grupo.getId(), grupo);
 		modelMapper.map(grupo, grupoModel);
 
-		grupoModel.add(algaLinks.linkToGrupos("grupo"));
+		grupoModel.add(algaLinks.linkToGrupos("grupos"));
 
-		grupoModel.add(algaLinks.linkToGruposPermissao(grupo.getId(), "permissoes"));
+		grupoModel.add(algaLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
 
 		return grupoModel;
 	}
