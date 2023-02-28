@@ -39,6 +39,7 @@ import com.algaworks.algafood.api.openapi.model.GruposModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PedidosModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.PedidosResumoModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PermissoesModelOpenApi;
 import com.ctc.wstx.shaded.msv_core.util.Uri;
 import com.fasterxml.classmate.TypeResolver;
@@ -103,6 +104,9 @@ public class SpringFoxConfig {
 	      
 	      .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, PermissaoModel.class),
 	    		  PermissoesModelOpenApi.class))
+	      
+	      .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, PedidoResumoModel.class), 
+	    		  PedidosResumoModelOpenApi.class))
 	      
 	      .apiInfo(apiInfo())
 	      .tags(new Tag("Cidades", "Gerencia as cidades"),
