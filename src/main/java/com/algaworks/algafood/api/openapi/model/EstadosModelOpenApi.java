@@ -7,20 +7,17 @@ import org.springframework.hateoas.Links;
 import com.algaworks.algafood.api.model.EstadoModel;
 
 import io.swagger.annotations.ApiModel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @ApiModel("EstadosModel")
-@Getter
-@Setter
+@Data
 public class EstadosModelOpenApi {
 
 	private EstadosEmbeddedModelOpenApi _embedded;
 	private Links _links;
 	
 	@ApiModel("EstadosEmbeddedModelOpenApi")
-	@Getter
-	@Setter
+	@Data
 	public class EstadosEmbeddedModelOpenApi{
 		
 		private List<EstadoModel> estados;
