@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.v1.controller;
+package com.algaworks.algafood.api.v2.controller;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.ResourceUriHelper;
-import com.algaworks.algafood.api.v1.assembler.CidadeInputDisassembler;
-import com.algaworks.algafood.api.v1.assembler.CidadeModelAssembler;
-import com.algaworks.algafood.api.v1.model.CidadeModel;
-import com.algaworks.algafood.api.v1.model.input.CidadeInput;
-import com.algaworks.algafood.api.v1.openapi.controller.CidadeControllerOpenApi;
+import com.algaworks.algafood.api.v2.assembler.CidadeInputDisassemblerV2;
+import com.algaworks.algafood.api.v2.assembler.CidadeModelAssemblerV2;
+import com.algaworks.algafood.api.v2.model.CidadeModelV2;
+import com.algaworks.algafood.api.v2.model.input.CidadeInputV2;
 import com.algaworks.algafood.core.web.AlgaMediaTypes;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -32,8 +30,8 @@ import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 
 @RestController
-@RequestMapping(value = "/cidades")
-public class CidadeController implements CidadeControllerOpenApi{
+@RequestMapping(path = "/cidades")
+public class CidadeControllerV2 {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -42,68 +40,64 @@ public class CidadeController implements CidadeControllerOpenApi{
 	private CadastroCidadeService cadastroCidade;
 	
 	@Autowired
-	private CidadeModelAssembler cidadeModelAssembler;
-
-	@Autowired
-	private CidadeInputDisassembler cidadeInputDisassembler;       
+	private CidadeModelAssemblerV2 cidadeModelAssembler;
 	
-	@Override
-	@GetMapping(produces = AlgaMediaTypes.V1_APPLICATION_JSON_VALUE)
-	public CollectionModel<CidadeModel> listar() {
+	@Autowired
+	private CidadeInputDisassemblerV2 cidadeInputDisassembler;
+	
+	@GetMapping(produces = AlgaMediaTypes.V2_APPLICATION_JSON_VALUE)
+	public CollectionModel<CidadeModelV2> listar() {
 		List<Cidade> todasCidades = cidadeRepository.findAll();
-
+		
 		return cidadeModelAssembler.toCollectionModel(todasCidades);
 	}
-
-	@Override
-	@GetMapping(path = "/{cidadeId}", produces = AlgaMediaTypes.V1_APPLICATION_JSON_VALUE)
-	public CidadeModel buscar(@PathVariable Long cidadeId) {
+	
+	@GetMapping(value = "/{cidadeId}", produces = AlgaMediaTypes.V2_APPLICATION_JSON_VALUE)
+	public CidadeModelV2 buscar(@PathVariable Long cidadeId) {
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
-
+		
 		return cidadeModelAssembler.toModel(cidade);
 	}
 
-	@Override
-	@PostMapping(produces = AlgaMediaTypes.V1_APPLICATION_JSON_VALUE)
+	@PostMapping(produces = AlgaMediaTypes.V2_APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
+	public CidadeModelV2 adicionar(@RequestBody @Valid CidadeInputV2 cidadeInput) {
 		try {
 			Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
-
+			
 			cidade = cadastroCidade.salvar(cidade);
-
-			CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
-
-			ResourceUriHelper.addUriResponseHeader(cidadeModel.getId());
-
+			
+			CidadeModelV2 cidadeModel = cidadeModelAssembler.toModel(cidade);
+			
+			ResourceUriHelper.addUriResponseHeader(cidadeModel.getIdCidade());
+			
 			return cidadeModel;
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
 
-	@Override
-	@PutMapping(path = "/{cidadeId}", produces = AlgaMediaTypes.V1_APPLICATION_JSON_VALUE)
-	public CidadeModel atualizar(@PathVariable Long cidadeId,
-	                             @RequestBody @Valid CidadeInput cidadeInput) {
+	@PutMapping(value = "/{cidadeId}", produces = AlgaMediaTypes.V2_APPLICATION_JSON_VALUE)
+	public CidadeModelV2 atualizar(@PathVariable Long cidadeId,
+			@RequestBody @Valid CidadeInputV2 cidadeInput) {
 		try {
 			Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
-
+			
 			cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
-
+			
 			cidadeAtual = cadastroCidade.salvar(cidadeAtual);
-
+			
 			return cidadeModelAssembler.toModel(cidadeAtual);
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
-
-	@Override
-	@DeleteMapping("/{cidadeId}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long cidadeId) {
-		cadastroCidade.excluir(cidadeId);
-	}
-
+	
+//  Não pode ser mapeado na mesma URL em um MediaType diferente, já que não aceita entrada e retorna void.
+//	@DeleteMapping(value = "/{cidadeId}", produces = {})
+//	@ResponseStatus(HttpStatus.NO_CONTENT)
+//	public void remover(@PathVariable Long cidadeId) {
+//		cadastroCidade.excluir(cidadeId);	
+//	}
+	
 }
