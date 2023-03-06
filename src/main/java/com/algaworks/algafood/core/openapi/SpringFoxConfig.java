@@ -47,6 +47,10 @@ import com.algaworks.algafood.api.v1.openapi.model.PermissoesModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.ProdutosModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.RestaurantesBasicoModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.UsuariosModelOpenApi;
+import com.algaworks.algafood.api.v2.model.CidadeModelV2;
+import com.algaworks.algafood.api.v2.model.CozinhaModelV2;
+import com.algaworks.algafood.api.v2.openapi.model.CidadesModelV2OpenApi;
+import com.algaworks.algafood.api.v2.openapi.model.CozinhasModelV2OpenApi;
 import com.ctc.wstx.shaded.msv_core.util.Uri;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -74,12 +78,9 @@ public class SpringFoxConfig {
 	public Docket apiDocketV1() {
 		var typeResolver = new TypeResolver();
 
-		return new Docket(DocumentationType.OAS_30)
-				.groupName("V1")
-				.select()
+		return new Docket(DocumentationType.OAS_30).groupName("V1").select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
-				.paths(PathSelectors.ant("/v1/**"))
-				.build().useDefaultResponseMessages(false)
+				.paths(PathSelectors.ant("/v1/**")).build().useDefaultResponseMessages(false)
 				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
 				.globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
 				.globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
@@ -127,7 +128,9 @@ public class SpringFoxConfig {
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, UsuarioModel.class), UsuariosModelOpenApi.class))
 
-				.apiInfo(apiInfoV1()).tags(new Tag("Cidades", "Gerencia as cidades"),
+				.apiInfo(apiInfoV1())
+				
+				.tags(new Tag("Cidades", "Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos de usuários"),
 						new Tag("Cozinhas", "Gerencia as cozinhas"),
 						new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
@@ -144,12 +147,9 @@ public class SpringFoxConfig {
 	public Docket apiDocketV2() {
 		var typeResolver = new TypeResolver();
 
-		return new Docket(DocumentationType.OAS_30)
-				.groupName("V2")
-				.select()
+		return new Docket(DocumentationType.OAS_30).groupName("V2").select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
-				.paths(PathSelectors.ant("/v2/**"))
-				.build().useDefaultResponseMessages(false)
+				.paths(PathSelectors.ant("/v2/**")).build().useDefaultResponseMessages(false)
 				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
 				.globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
 				.globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
@@ -160,7 +160,15 @@ public class SpringFoxConfig {
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
 
-				.apiInfo(apiInfoV2());
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(PagedModel.class, CozinhaModelV2.class), CozinhasModelV2OpenApi.class))
+
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(CollectionModel.class, CidadeModelV2.class), CidadesModelV2OpenApi.class))
+
+				.apiInfo(apiInfoV2())
+
+				.tags(new Tag("Cidades", "Gerencia as cidades"), new Tag("Cozinhas", "Gerencia as cozinhas"));
 
 	}
 

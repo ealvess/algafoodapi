@@ -6,11 +6,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 public class CozinhaInputV2 {
 
 	@ApiModelProperty(example = "Brasileira", required = true)
 	@NotBlank
-	private String nome;
+	private String nomeCozinha;
+
 }
