@@ -159,6 +159,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
+
+		<!-- LOGGLY -->
+		<dependency>
+			<groupId>org.logback-extensions</groupId>
+			<artifactId>logback-ext-loggly</artifactId>
+			<version>0.1.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

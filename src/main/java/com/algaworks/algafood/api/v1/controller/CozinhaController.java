@@ -29,11 +29,14 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping(value = "/v1/cozinhas")
 
 public class CozinhaController implements CozinhaControllerOpenApi{
-
+	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 	
@@ -51,6 +54,9 @@ public class CozinhaController implements CozinhaControllerOpenApi{
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
+		log.info("listando cozinhas com paginas de {} registros", pageable.getPageSize());
+		
+		
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 		
 		PagedModel<CozinhaModel> cozinhasPagedModel = pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
